@@ -1,0 +1,21 @@
+camunda.bpm.admin-user:
+  id: admin
+  password: admin
+server:
+  port: 8082
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:./camundaDB
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+base:
+  url:
+    path:
+      user: http://localhost:8080/users/
+      car: http://localhost:8081/cars/
+test:
+  test: test
