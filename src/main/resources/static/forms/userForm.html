@@ -1,0 +1,68 @@
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+
+<form role="form" name="form">
+    <div class="form-group">
+        <label>User login *</label>
+        <input required
+               id="login"
+               cam-variable-name="login"
+               cam-variable-type="String"
+               class="form-control"
+               onchange="validateLogin()"/>
+    </div>
+    <div class="form-group">
+        <label>User name *</label>
+        <input required
+               id="name"
+               cam-variable-name="name"
+               cam-variable-type="String"
+               class="form-control"
+               onchange="validateName()"/>
+    </div>
+    <div class="form-group">
+        <label>User Password *</label>
+        <input required
+               id="password"
+               cam-variable-name="password"
+               cam-variable-type="String"
+               class="form-control"
+               onchange="validatePassword()"/>
+    </div>
+    <div>
+        <p id="alert"></p>
+    </div>
+
+    <script>
+        function validateLogin() {
+            var flogin = ($("#login")).val();
+            if (flogin.length <= 4) {
+                ($("#alert")).css("color", "Tomato").text("Login must be longer than 4 characters");
+                return false;
+            } else {
+                ($("#alert")).text("");
+            }
+        }
+
+        function validateName() {
+            var fname = ($("#name")).val();
+            console.log(fname);
+            if (fname.length <= 4) {
+                ($("#alert")).text("Name must be longer than 4 characters").css("color", "Tomato");
+
+                return false;
+            } else {
+                ($("#alert")).text("");
+            }
+        }
+
+        function validatePassword() {
+            var fpassword = ($("#password")).val();
+            if (fpassword.length <= 8) {
+                ($("#alert")).text("Password must be longer than 8 characters").css("color", "Tomato");
+                return false;
+            } else {
+                ($("#alert")).text("");
+            }
+        }
+    </script>
+</form>

@@ -26,7 +26,9 @@ public class CancelService implements JavaDelegate {
         RestTemplate restTemplate = new RestTemplate(requestFactory);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/cars/return/" + selectedCarID, HttpMethod.PATCH, null, String.class);
+            ResponseEntity<String> response = restTemplate
+                    .exchange("http://localhost:8081/cars/return/" + selectedCarID,
+                            HttpMethod.PATCH, null, String.class);
 
             log.info("################### {}", response);
 

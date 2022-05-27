@@ -25,10 +25,10 @@ public class ReserveCarService implements JavaDelegate {
             ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/cars/reserve/" + selectedCarID, HttpMethod.PATCH, null, String.class);
 
             log.info("################### {}", response);
-            execution.setVariable("isCarAvailable", true);
+            execution.setVariable("existInDatabase", true);
         } catch (HttpClientErrorException ee) {
             log.error(ee.getMessage());
-            execution.setVariable("isCarAvailable", false);
+            execution.setVariable("existInDatabase", false);
         }
 
     }

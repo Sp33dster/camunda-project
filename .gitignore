@@ -1,0 +1,5 @@
+/.idea/
+/target/
+/camundaDB.mv.db
+/camundaDB.trace.db
+

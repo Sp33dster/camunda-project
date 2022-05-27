@@ -38,10 +38,10 @@ public class GetAvailableCarsService implements JavaDelegate {
 
             log.info(cars[0].toString());
             execution.setVariable("carsMap", carsMap);
-            execution.setVariable("getAvailableCars", true);
+            execution.setVariable("existInDatabase", true);
         } catch (HttpClientErrorException ee) {
             log.error(ee.getMessage());
-            execution.setVariable("getAvailableCars", false);
+            execution.setVariable("existInDatabase", false);
 
         }
 

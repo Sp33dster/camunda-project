@@ -39,7 +39,8 @@ public class AddUserService implements JavaDelegate {
 
         log.info("################# json request {}", request);
 
-        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/users", request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/users",
+                request, String.class);
 
         log.info(response.toString());
 

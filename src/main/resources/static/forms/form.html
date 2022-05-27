@@ -1,3 +1,6 @@
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<table id="table_id"></table>
+
 
 <form role="form" name="form">
   <div class="form-group">
@@ -25,5 +28,46 @@
            cam-variable-type="Long"
            class="form-control" />
   </div>
-</form>
+  <div>
+    <label for="carMap">carMap</label>
+    <textarea id="carMap"></textarea>
+  </div>
 
+
+
+<script >
+
+
+
+  var variableManager = camForm.variableManager;
+  var carMap = $('#carMap', camForm.formElement);
+
+  camForm.on('form-loaded', function(){
+    variableManager.fetchVariable('carMap');
+  });
+
+  camForm.on('variables-fetched', function (){
+    var cM = variableManager.variableValue('carMap');
+    carMap.val(cM);
+  });
+
+  console.log(variableManager.variables);
+
+   $(document)
+           .ready(function () {
+             $('#table_id')
+                     .DataTable({
+                       data: carsMap,
+                       columns: [{
+                         "carsMap": "ID"
+                       }, {
+                         "carsMap": "Brand"
+                       }, {
+                         "carsMap": "Model"
+                       }, {
+                         "carsMap": "EngineCapacity"
+                       }]
+                     });
+          });
+</script>
+</form>

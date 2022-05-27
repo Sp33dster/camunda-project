@@ -12,10 +12,15 @@ spring:
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
-base:
+path:
   url:
-    path:
+    base:
       user: http://localhost:8080/users/
       car: http://localhost:8081/cars/
+      torent: torent/
+      reserve: reserve/
+      rent: rent/
+      cancel: return/
+
 test:
   test: test
