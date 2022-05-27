@@ -94,6 +94,7 @@ public class RestServiceDelegate implements JavaDelegate {
 
         } catch (Exception e) {
 
+
             log.error(e.getMessage());
         }
 
