@@ -1,73 +1,67 @@
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
-<table id="table_id"></table>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+
+<table id="table_id" class="display" width="100%"></table>
 
 <form role="form" name="form">
-  <div class="form-group">
-    <label >Car ID</label>
-    <input required
-           cam-variable-name="carId"
-           cam-variable-type="String"
-           class="form-control" />
-  </div>
-  <div class="form-group">
-    <label >Brand</label>
-    <input cam-variable-name="brand"
-           cam-variable-type="String"
-           class="form-control" />
-  </div>
-  <div class="form-group">
-    <label >Model</label>
-    <input cam-variable-name="model"
-           cam-variable-type="String"
-           class="form-control" />
-  </div>
-  <div class="form-group">
-    <label >Engine Capacity</label>
-    <input cam-variable-name="engCapacity"
-           cam-variable-type="Long"
-           class="form-control" />
-  </div>
-  <div>
-    <label for="carMap">carMap</label>
-    <textarea id="carMap"></textarea>
-  </div>
 
-
-
-<script >
-
-
-
+  <script cam-script type="text/form-script">
   var variableManager = camForm.variableManager;
-  var carMap = $('#carMap', camForm.formElement);
+  var table = $('#table_id');
+  var cm = $('#carMap', camForm.formElement);
 
-  camForm.on('form-loaded', function(){
-    variableManager.fetchVariable('carMap');
-  });
+   camForm.on('form-loaded', function() {
+      variableManager.fetchVariable('carMap');
 
-  camForm.on('variables-fetched', function (){
-    var cM = variableManager.variableValue('carMap');
-    carMap.val(cM);
-  });
+      console.log('Po załadowaniu formularza: ',variableManager.variables);
+    });
 
-  console.log(variableManager.variables);
+    camForm.on('variables-fetched', function() {
+      var cMF = variableManager.variableValue('carMap');
+      cm.val(cMF);
+<!--      for(var i=0; i<cMF.length; i++){-->
+<!--        table.append(cMF[i]);-->
+<!--      }-->
+      console.log('Wartosc cMF to : ', cMF);
 
-   $(document)
-           .ready(function () {
-             $('#table_id')
-                     .DataTable({
-                       data: carsMap,
-                       columns: [{
-                         "carsMap": "ID"
-                       }, {
-                         "carsMap": "Brand"
-                       }, {
-                         "carsMap": "Model"
-                       }, {
-                         "carsMap": "EngineCapacity"
-                       }]
-                     });
-          });
+      let daTable = '{ "data" : ' + cMF + '}';
+      console.log(daTable);
+      const obj = JSON.parse(cMF);
+      console.log('Ocject JavaScript = ', obj);
+      $(document).ready(function(){
+      $('#table_id').DataTable({
+        data : obj,
+        columns : [
+        {title : 'ID', data : 'id'},
+        {title : 'Brand', data : 'brand'},
+        {title : 'Model', data : 'model'},
+        {title : 'Registration Number', data : 'registrationNumber'},
+        {title : 'Engine Capacity', data : 'engineCapacity'},
+        {title : 'Car Status', data : 'carStatus'}
+        ],
+    });
+    });
+      console.log('zmienna carMap: ', cMF);
+    });
+
+
+
+<!--    $(document).ready(function(){-->
+<!--    $('#table_id').DataTable({-->
+<!--        data : variableManager.variableValue('carMap'),-->
+<!--        columns : [-->
+<!--        {data : 'id'},-->
+<!--        {data : 'brand'},-->
+<!--        {data : 'model'},-->
+<!--        {data : 'registrationNumber'},-->
+<!--        {data : 'engineCapacity'},-->
+<!--        {data : 'carStatus'}-->
+<!--        ]-->
+<!--    });-->
+
+<!--    });-->
+
 </script>
 </form>

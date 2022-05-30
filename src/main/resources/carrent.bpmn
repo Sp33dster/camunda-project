@@ -19,6 +19,9 @@
         <camunda:field name="detailURL">
           <camunda:string>URL_CAR_TORENT</camunda:string>
         </camunda:field>
+        <camunda:field name="resp">
+          <camunda:string>carMap</camunda:string>
+        </camunda:field>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1dfyxch</bpmn:incoming>
       <bpmn:incoming>Flow_082rfe2</bpmn:incoming>
@@ -66,6 +69,9 @@
         </camunda:field>
         <camunda:field name="valueMapping">
           <camunda:string>userID=userID</camunda:string>
+        </camunda:field>
+        <camunda:field name="resp">
+          <camunda:string>userIDResp</camunda:string>
         </camunda:field>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1mznfv8</bpmn:incoming>

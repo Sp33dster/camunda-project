@@ -28,6 +28,7 @@ public class RestServiceDelegate implements JavaDelegate {
     protected Expression methodHTTP;
     protected Expression detailURL;
     protected Expression valueMapping;
+    protected Expression resp;
 
 
     @Override
@@ -118,7 +119,7 @@ public class RestServiceDelegate implements JavaDelegate {
             log.info("get Method");
             log.info(response.getBody() + response.getStatusCode());
             execution.setVariable("existInDatabase", true);
-
+            execution.setVariable(resp.getExpressionText(), response.getBody());
         } catch (HttpClientErrorException ee) {
             log.error(ee.getMessage());
             execution.setVariable("existInDatabase", false);
