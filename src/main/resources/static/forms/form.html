@@ -1,16 +1,17 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
 
 
 <table id="table_id" class="display" width="100%"></table>
 
 <form role="form" name="form">
 
-  <script cam-script type="text/form-script">
+    <script cam-script type="text/form-script">
   var variableManager = camForm.variableManager;
   var table = $('#table_id');
   var cm = $('#carMap', camForm.formElement);
+
 
    camForm.on('form-loaded', function() {
       variableManager.fetchVariable('carMap');
@@ -30,8 +31,7 @@
       console.log(daTable);
       const obj = JSON.parse(cMF);
       console.log('Ocject JavaScript = ', obj);
-      $(document).ready(function(){
-      $('#table_id').DataTable({
+       $('#table_id').DataTable({
         data : obj,
         columns : [
         {title : 'ID', data : 'id'},
@@ -39,29 +39,38 @@
         {title : 'Model', data : 'model'},
         {title : 'Registration Number', data : 'registrationNumber'},
         {title : 'Engine Capacity', data : 'engineCapacity'},
-        {title : 'Car Status', data : 'carStatus'}
+        {title : 'Car Status', data : 'carStatus'},
+        {title : 'Check Car', data : 'carStatus'}
+
         ],
-    });
-    });
+        columnDefs: [ {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   6
+        } ],
+        select: true
+      });
+      var tabley = $('#table_id').DataTable();
+
+      $('#table_id tbody').on( 'click', 'tr', function () {
+      var rowta = JSON.stringify(tabley.row(this).data());
+      console.log('row data: ', rowta);
+      var rowjson = JSON.parse(rowta);
+      console.log('id rowjson : ', rowjson.id);
+variableManager.createVariable({
+        name: 'selectedCarID',
+        type: 'String',
+        value: rowjson.id,
+        isDirty: true
+      });
+   } );
       console.log('zmienna carMap: ', cMF);
     });
 
 
 
-<!--    $(document).ready(function(){-->
-<!--    $('#table_id').DataTable({-->
-<!--        data : variableManager.variableValue('carMap'),-->
-<!--        columns : [-->
-<!--        {data : 'id'},-->
-<!--        {data : 'brand'},-->
-<!--        {data : 'model'},-->
-<!--        {data : 'registrationNumber'},-->
-<!--        {data : 'engineCapacity'},-->
-<!--        {data : 'carStatus'}-->
-<!--        ]-->
-<!--    });-->
 
-<!--    });-->
 
-</script>
+
+    </script>
 </form>

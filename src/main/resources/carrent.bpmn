@@ -28,13 +28,13 @@
       <bpmn:outgoing>Flow_1jsbcqb</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1jsbcqb" sourceRef="availableCars" targetRef="Activity_1pqqfst" />
-    <bpmn:serviceTask id="rentCar" name="rent Car" camunda:delegateExpression="${restServiceDelegate}">
+    <bpmn:serviceTask id="rentCar" name="rent Car" camunda:asyncBefore="true" camunda:delegateExpression="${restServiceDelegate}">
       <bpmn:extensionElements>
         <camunda:field name="URL">
           <camunda:string>URL_CAR</camunda:string>
         </camunda:field>
         <camunda:field name="checkID">
-          <camunda:string>${selectedCarID}</camunda:string>
+          <camunda:expression>${selectedCarID}</camunda:expression>
         </camunda:field>
         <camunda:field name="methodHTTP">
           <camunda:string>PATCH</camunda:string>
@@ -157,7 +157,7 @@
     <bpmn:sequenceFlow id="Flow_082rfe2" sourceRef="Gateway_17ubotk" targetRef="availableCars">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${chooseAnotherCar=='true'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:receiveTask id="Activity_0nu984d" name="Payment">
+    <bpmn:receiveTask id="Activity_0nu984d" name="Payment" camunda:asyncBefore="true" messageRef="Message_12kud24">
       <bpmn:incoming>Flow_0f0t3vu</bpmn:incoming>
       <bpmn:outgoing>Flow_155dgt4</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -168,13 +168,13 @@
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_1e6bwgm" sourceRef="Event_0dn4hst" targetRef="Activity_1dlvqls" />
-    <bpmn:serviceTask id="Activity_1dlvqls" name="Cancel reservation" camunda:delegateExpression="${restServiceDelegate}">
+    <bpmn:serviceTask id="Activity_1dlvqls" name="Cancel reservation" camunda:asyncBefore="true" camunda:delegateExpression="${restServiceDelegate}">
       <bpmn:extensionElements>
         <camunda:field name="URL">
           <camunda:string>URL_CAR</camunda:string>
         </camunda:field>
         <camunda:field name="checkID">
-          <camunda:string>${selectedCarID}</camunda:string>
+          <camunda:expression>${selectedCarID}</camunda:expression>
         </camunda:field>
         <camunda:field name="methodHTTP">
           <camunda:string>PATCH</camunda:string>
@@ -202,18 +202,12 @@
       <bpmn:outgoing>Flow_0qrvjbs</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_1vcgm4n" />
     </bpmn:boundaryEvent>
-    <bpmn:endEvent id="Event_0oq7eja">
-      <bpmn:incoming>Flow_03qyx0s</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_03qyx0s" sourceRef="Activity_1dlvqls" targetRef="Event_0oq7eja" />
     <bpmn:sequenceFlow id="Flow_1yvxt7e" sourceRef="rentCar" targetRef="Activity_170xntx" />
-    <bpmn:sendTask id="Activity_170xntx" name="FV Email" camunda:delegateExpression="${sendEmailService}">
+    <bpmn:sendTask id="Activity_170xntx" name="FV Email" camunda:asyncBefore="true" camunda:delegateExpression="${sendEmailService}">
       <bpmn:incoming>Flow_1yvxt7e</bpmn:incoming>
       <bpmn:outgoing>Flow_0izz5l4</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:endEvent id="Event_1fm7qnk">
-      <bpmn:incoming>Flow_0izz5l4</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0izz5l4" sourceRef="Activity_170xntx" targetRef="Event_1fm7qnk" />
     <bpmn:userTask id="Activity_19hqac5" name="There is no car available">
       <bpmn:extensionElements>
@@ -258,6 +252,9 @@
         <camunda:field name="detailURL">
           <camunda:string>URL_CAR_RESERVE</camunda:string>
         </camunda:field>
+        <camunda:field name="valueMapping">
+          <camunda:string>a=a</camunda:string>
+        </camunda:field>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1amaxh5</bpmn:incoming>
       <bpmn:outgoing>Flow_0vhlgwc</bpmn:outgoing>
@@ -283,8 +280,16 @@
     <bpmn:sequenceFlow id="Flow_0xzlvog" name="No" sourceRef="Gateway_0ykmh3t" targetRef="Activity_19hqac5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${existInDatabase=='false'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0oq7eja">
+      <bpmn:incoming>Flow_03qyx0s</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0m9izo1" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_1fm7qnk">
+      <bpmn:incoming>Flow_0izz5l4</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0kn20xg" />
+    </bpmn:endEvent>
   </bpmn:process>
-  <bpmn:message id="Message_1azyyz7" name="Message_1suk5ln" />
+  <bpmn:message id="Message_12kud24" name="Message_payment" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="renting-car">
       <bpmndi:BPMNEdge id="Flow_0xzlvog_di" bpmnElement="Flow_0xzlvog">
@@ -500,14 +505,8 @@
       <bpmndi:BPMNShape id="Event_05lwunl_di" bpmnElement="Event_05lwunl">
         <dc:Bounds x="452" y="342" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0oq7eja_di" bpmnElement="Event_0oq7eja">
-        <dc:Bounds x="1882" y="102" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1syiknx_di" bpmnElement="Activity_170xntx">
         <dc:Bounds x="1860" y="200" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1fm7qnk_di" bpmnElement="Event_1fm7qnk">
-        <dc:Bounds x="2022" y="222" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_01005yr_di" bpmnElement="Activity_19hqac5">
         <dc:Bounds x="1060" y="320" width="100" height="80" />
@@ -541,6 +540,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_156353d_di" bpmnElement="Event_0dn4hst">
         <dc:Bounds x="1642" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qnrefu_di" bpmnElement="Event_0oq7eja">
+        <dc:Bounds x="1882" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0kzqzy7_di" bpmnElement="Event_1fm7qnk">
+        <dc:Bounds x="2022" y="222" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

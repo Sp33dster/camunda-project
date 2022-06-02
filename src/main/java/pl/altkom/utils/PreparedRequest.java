@@ -15,7 +15,7 @@ public class PreparedRequest {
     private static final String EQUALS = "=";
 
     public static Map<String, String> fillBody(DelegateExecution execution, Expression expression) {
-
+//toDO sprawdx czy execution string jest pusty
         String executionString = expression.getExpressionText();
         log.info("Ourn string to be {}", executionString);
         Map<String, String> mapString = new HashMap<>();

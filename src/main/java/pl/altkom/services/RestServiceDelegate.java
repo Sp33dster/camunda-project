@@ -65,6 +65,7 @@ public class RestServiceDelegate implements JavaDelegate {
 
 //        MultiValueMap<String, String> requestMap = PreparedRequest.fillBody(execution, valueMapping);
         Map<String, String> requestMap = new HashMap<>();
+
         PreparedRequest.fillBody(execution, valueMapping, requestMap);
         log.info(requestMap.toString());
         if (requestMap.isEmpty()) {
@@ -89,6 +90,7 @@ public class RestServiceDelegate implements JavaDelegate {
         restTemplate = new RestTemplate(requestFactory);
 
         try {
+            log.info("przekazany string to: {}", completeURL);
             ResponseEntity<String> response = restTemplate.exchange(completeURL, HttpMethod.PATCH, null, String.class);
             log.info("Patch Method");
             log.info(response.getBody() + response.getStatusCode());
@@ -163,26 +165,6 @@ public class RestServiceDelegate implements JavaDelegate {
 //        return restTemplate;
 //    }
 
-//    private HttpEntity<MultiValueMap<String, String>> doSomeMagicToAddEntity(DelegateExecution execution) {
-//        String loginForm = (String) execution.getVariable("login");
-//        String nameForm = (String) execution.getVariable("name");
-//        String passwordForm = (String) execution.getVariable("password");
-//
-//        log.info("############## {}", execution.getVariables());
-//
-//        HttpHeaders headers = new HttpHeaders();
-//
-//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//
-//        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-//        map.add("login", loginForm);
-//        map.add("name", nameForm);
-//        map.add("password", passwordForm);
-//
-//
-//        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-//        return request;
-//    }
 
     private String createCompleteURL(DelegateExecution execution) throws NoSuchFieldException, IllegalAccessException {
         StringBuilder stringURL = new StringBuilder();
